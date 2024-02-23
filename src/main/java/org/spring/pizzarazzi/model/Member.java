@@ -27,5 +27,6 @@ public class Member {
     private String nickName;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private RoleType roleType;
 }
