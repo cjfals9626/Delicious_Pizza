@@ -1,4 +1,4 @@
-package org.spring.pizzarazzi.model;
+package org.spring.pizzarazzi.model.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,8 @@ import org.spring.pizzarazzi.enums.RoleType;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    @Column(name = "member_id", nullable = false)
+    private Long id;
 
     @Column(nullable = false)
     private String email;

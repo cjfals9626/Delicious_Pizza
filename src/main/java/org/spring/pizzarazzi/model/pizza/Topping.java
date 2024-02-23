@@ -1,4 +1,4 @@
-package org.spring.pizzarazzi.model;
+package org.spring.pizzarazzi.model.pizza;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Dough {
+public class Topping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long DoughId;
+    @Column(name = "topping_id", nullable = false)
+    private Long id;
 
     @Column(nullable = false)
     private String name;
