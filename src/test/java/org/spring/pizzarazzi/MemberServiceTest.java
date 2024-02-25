@@ -1,20 +1,15 @@
 package org.spring.pizzarazzi;
 
 import jakarta.transaction.Transactional;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.spring.pizzarazzi.dto.member.MemberLoginDTO;
-import org.spring.pizzarazzi.dto.member.MemberSignUpDTO;
+import org.spring.pizzarazzi.dto.request.RequestMemberSignUpDTO;
 import org.spring.pizzarazzi.enums.RoleType;
-import org.spring.pizzarazzi.model.user.Member;
 import org.spring.pizzarazzi.repository.MemberRepository;
 import org.spring.pizzarazzi.service.member.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
 
-    private List<MemberSignUpDTO> memberDtos = new ArrayList<>();
+    private List<RequestMemberSignUpDTO> memberDtos = new ArrayList<>();
 
 
     //회원가입 단위 테스트를 위해 오로지 서비스 계층만의 함수를 확인하기 위한 목 객체
@@ -50,13 +44,13 @@ public class MemberServiceTest {
         memberService = new MemberService(memberRepository,passwordEncoder);
 
         memberDtos = Arrays.asList(
-                MemberSignUpDTO.builder()
+                RequestMemberSignUpDTO.builder()
                         .email("user1@naver.com")
                         .password("1234")
                         .nickname("사용자1")
                         .roleType(RoleType.valueOf("CONSUMER"))
                         .build(),
-                MemberSignUpDTO.builder()
+                RequestMemberSignUpDTO.builder()
                         .email("user2@naver.com")
                         .password("1234")
                         .nickname("사용자2")

@@ -1,4 +1,4 @@
-package org.spring.pizzarazzi.dto.member;
+package org.spring.pizzarazzi.dto.request;
 
 import lombok.*;
 import org.spring.pizzarazzi.enums.RoleType;
@@ -11,7 +11,7 @@ import org.spring.pizzarazzi.model.user.Member;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class MemberSignUpDTO {
+public class RequestMemberSignUpDTO {
     private String email;
     private String password;
     private String nickName;

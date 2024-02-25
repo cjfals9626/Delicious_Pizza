@@ -1,4 +1,4 @@
-package org.spring.pizzarazzi.dto.member;
+package org.spring.pizzarazzi.dto.request;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class MemberLoginDTO {
+public class RequestMemberLoginDTO {
     private String email;
     private String password;
 }
