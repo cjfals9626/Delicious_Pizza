@@ -1,6 +1,7 @@
 package org.spring.pizzarazzi.service.pizza;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.pizzarazzi.dto.pizza.DoughDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestAddDoughDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestDeletePizzaComDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestUpdatePizzaComDTO;
@@ -22,12 +23,12 @@ public class DoughService {
         doughRepository.save(dough);
     }
 
-    public List<Dough> getAllDoughs(){
-        return doughRepository.findAll();
+    public List<DoughDTO> getAllDoughs(){
+        return doughRepository.findAllDoughDTO();
     }
 
-    public Dough getDoughById(Long id) {
-        return doughRepository.findById(id)
+    public DoughDTO getDoughById(Long id) {
+        return doughRepository.findByIdDoughDTO(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("해당 도우가 없습니다.")
                 );

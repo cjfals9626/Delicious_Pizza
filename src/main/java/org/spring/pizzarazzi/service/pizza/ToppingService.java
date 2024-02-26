@@ -1,6 +1,7 @@
 package org.spring.pizzarazzi.service.pizza;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestAddToppingDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestDeletePizzaComDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestUpdatePizzaComDTO;
@@ -23,12 +24,12 @@ public class ToppingService {
         toppingRepository.save(topping);
     }
 
-    public List<Topping> getAllToppings(){
-        return toppingRepository.findAll();
+    public List<ToppingDTO> getAllToppings(){
+        return toppingRepository.findAllToppingDTO();
     }
 
-    public Topping getToppingById(Long id) {
-        return toppingRepository.findById(id)
+    public ToppingDTO getToppingById(Long id) {
+        return toppingRepository.findByIdToppingDTO(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("해당 토핑이 없습니다.")
                 );

@@ -1,6 +1,7 @@
 package org.spring.pizzarazzi.service.pizza;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestAddEdgeDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestDeletePizzaComDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestUpdatePizzaComDTO;
@@ -23,12 +24,12 @@ public class EdgeService {
 
         edgeRepository.save(edge);
     }
-    public List<Edge> getAllEdges(){
-        return edgeRepository.findAll();
+    public List<EdgeDTO> getAllEdges(){
+        return edgeRepository.findAllEdgeDTO();
     }
 
-    public Edge getEdgeById(Long id) {
-        return edgeRepository.findById(id)
+    public EdgeDTO getEdgeById(Long id) {
+        return edgeRepository.findByIdEdgeDTO(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("해당 엣지가 없습니다.")
                 );

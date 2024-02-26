@@ -8,6 +8,7 @@ import org.spring.pizzarazzi.dto.request.pizza.RequestUpdatePizzaComDTO;
 import org.spring.pizzarazzi.exception.DuplicateEdgeException;
 import org.spring.pizzarazzi.service.pizza.EdgeService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,15 @@ public class EdgeController {
     @GetMapping("/edges")
     public ResponseEntity<MsgDTO> getAllEdges() {
         return ResponseEntity.ok(new MsgDTO(true, "엣지 목록 조회 성공", edgeService.getAllEdges()));
+    }
+
+    @GetMapping("/edge/{id}")
+    public ResponseEntity<MsgDTO> getEdgeById(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok(new MsgDTO(true, "엣지 조회 성공", edgeService.getEdgeById(id)));
+        }catch (IncorrectResultSizeDataAccessException e) {
+            return ResponseEntity.ok(new MsgDTO(false, "엣지 추가 실패", null));
+        }
     }
 
     @PostMapping("/delete")

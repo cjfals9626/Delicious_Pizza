@@ -8,6 +8,7 @@ import org.spring.pizzarazzi.dto.request.pizza.RequestUpdatePizzaComDTO;
 import org.spring.pizzarazzi.exception.DuplicateDoughException;
 import org.spring.pizzarazzi.service.pizza.DoughService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,15 @@ public class DoughController {
     @GetMapping("/doughs")
     public ResponseEntity<MsgDTO> getAllDoughs() {
         return ResponseEntity.ok(new MsgDTO(true, "도우 목록 조회 성공", doughService.getAllDoughs()));
+    }
+
+    @GetMapping("/dough/{id}")
+    public ResponseEntity<MsgDTO> getDoughById(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok(new MsgDTO(true, "도우 조회 성공", doughService.getDoughById(id)));
+        }catch (IncorrectResultSizeDataAccessException e) {
+            return ResponseEntity.ok(new MsgDTO(false, "도우 추가 실패", null));
+        }
     }
 
     @PostMapping("/delete")

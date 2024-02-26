@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.spring.pizzarazzi.dto.pizza.DoughDTO;
 import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestAddDoughDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestDeletePizzaComDTO;
@@ -60,20 +61,15 @@ class DoughServiceTest {
         doughService.addDough(requestAddDoughDTO2);
         //then
         assertEquals(2, doughService.getAllDoughs().size());
-        //모든 도우 id 출력
-        for (Dough dough : doughService.getAllDoughs()) {
-            System.out.println("dough = " + dough.getId());
-        }
     }
 
     @Test
     void getAllDoughs() {
         //given
-        addDough();
         //when
-        List<Dough> doughs = doughService.getAllDoughs();
+        List<DoughDTO> doughs = doughService.getAllDoughs();
         //then
-        assertEquals(2, doughs.size());
+        assertEquals(3, doughs.size());
     }
 
     @Test
