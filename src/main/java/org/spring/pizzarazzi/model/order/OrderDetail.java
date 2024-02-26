@@ -39,5 +39,5 @@ public class OrderDetail {
     private List<OrderDetailTopping> orderDetailToppings = new ArrayList<>();
 
     @Column
-    private int totalPrice;
+    private Long totalPrice;
 }
