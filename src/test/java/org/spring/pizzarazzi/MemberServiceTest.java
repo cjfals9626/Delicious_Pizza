@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.spring.pizzarazzi.dto.request.RequestMemberSignUpDTO;
+import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
 import org.spring.pizzarazzi.enums.RoleType;
 import org.spring.pizzarazzi.repository.MemberRepository;
 import org.spring.pizzarazzi.service.member.MemberService;

@@ -2,8 +2,8 @@ package org.spring.pizzarazzi.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.spring.pizzarazzi.dto.response.ResponseLoginDTO;
-import org.spring.pizzarazzi.dto.request.RequestMemberLoginDTO;
-import org.spring.pizzarazzi.dto.request.RequestMemberSignUpDTO;
+import org.spring.pizzarazzi.dto.request.member.RequestMemberLoginDTO;
+import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
 import org.spring.pizzarazzi.service.member.MemberService;
 import org.spring.pizzarazzi.util.jwt.TokenProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package org.spring.pizzarazzi.dto.request;
+package org.spring.pizzarazzi.dto.request.member;
 
 import lombok.*;
 import org.spring.pizzarazzi.enums.RoleType;
