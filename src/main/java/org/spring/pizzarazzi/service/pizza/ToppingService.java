@@ -24,11 +24,11 @@ public class ToppingService {
         toppingRepository.save(topping);
     }
 
-    public List<ToppingDTO> getAllToppings(){
+    public List<ToppingDTO> findAllToppings(){
         return toppingRepository.findAllToppingDTO();
     }
 
-    public ToppingDTO getToppingById(Long id) {
+    public ToppingDTO findToppingById(Long id) {
         return toppingRepository.findByIdToppingDTO(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("해당 토핑이 없습니다.")
