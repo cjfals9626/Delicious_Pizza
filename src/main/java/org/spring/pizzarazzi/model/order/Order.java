@@ -27,8 +27,9 @@ public class Order {
     @ToString.Exclude
     private Member member;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-    private List<OrderDetail> orderDetails = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "order_detail_id")
+    private OrderDetail orderDetail;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
