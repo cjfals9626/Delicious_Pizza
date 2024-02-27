@@ -57,4 +57,15 @@ public class MemberController {
         }
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<MsgDTO> deleteMember(@RequestHeader(value = AUTHORIZATION) String accessToken){
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        try {
+            memberService.deleteMember(memberId);
+            return ResponseEntity.ok(new MsgDTO(true, "회원 탈퇴 성공", null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new MsgDTO(false, "회원 탈퇴 실패", null));
+        }
+    }
+
 }

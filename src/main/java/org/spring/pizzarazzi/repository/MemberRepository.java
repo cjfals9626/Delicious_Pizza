@@ -19,4 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select new org.spring.pizzarazzi.dto.member.MemberLoginInfoDTO(m.email, m.nickName, m.roleType) from Member m where m.email like :email")
     Optional<MemberLoginInfoDTO> findMemberInfoByEmail(@Param("email") String email);
+
 }

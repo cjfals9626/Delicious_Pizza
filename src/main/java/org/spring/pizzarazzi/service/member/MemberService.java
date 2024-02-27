@@ -99,4 +99,14 @@ public class MemberService implements UserDetailsService  {
         member.setNickName(memberUpdateDTO.getNickName());
         member.setPassword(passwordEncoder.encode(memberUpdateDTO.getPassword()));
     }
+
+    public void deleteMember(Long memberId) {
+        log.info("MemberService.deleteMember");
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다."));
+
+        if (member != null) {
+            memberRepository.delete(member);
+        }
+
+    }
 }
