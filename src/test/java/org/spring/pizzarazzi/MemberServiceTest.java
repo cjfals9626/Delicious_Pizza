@@ -47,13 +47,13 @@ public class MemberServiceTest {
                 RequestMemberSignUpDTO.builder()
                         .email("user1@naver.com")
                         .password("1234")
-                        .nickname("사용자1")
+                        .nickName("사용자1")
                         .roleType(RoleType.valueOf("CONSUMER"))
                         .build(),
                 RequestMemberSignUpDTO.builder()
                         .email("user2@naver.com")
                         .password("1234")
-                        .nickname("사용자2")
+                        .nickName("사용자2")
                         .roleType(RoleType.SHOPKEEPER)
                         .build()
 
@@ -69,7 +69,7 @@ public class MemberServiceTest {
         //when
         memberService.signup(memberDtos.get(0));
         memberService.signup(memberDtos.get(1));
-
+        
         //then
         // Id 생성 전략을 Identity를 사용하므로, 실제 DBd에 저장되야만 Id가 생성된다. 따라서 테스트에서 Id를 검증할 수 없다.
         // 만약 Id를 검증하려면 Repository를 Mock이 아니라 실제 Bean으로 사용해야 가능할 듯 싶다.

@@ -46,5 +46,4 @@ public class AuthController {
         }
         return ResponseEntity.ok(new MsgDTO(false, "로그인 실패", null));
     }
-
 }

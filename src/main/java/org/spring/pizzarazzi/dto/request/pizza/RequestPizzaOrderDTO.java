@@ -6,12 +6,9 @@ import org.spring.pizzarazzi.enums.RoleType;
 import java.util.List;
 
 @Builder
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class RequestPizzaOrderDTO {
     private Long doughId;
     private Long edgeId;

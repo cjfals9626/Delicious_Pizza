@@ -55,9 +55,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                                //.requestMatchers("").authenticated()
                                 .requestMatchers("/api/consumer/**").hasAuthority("CONSUMER")
                                 .requestMatchers("/api/shopkeeper/**").hasAuthority("SHOPKEEPER")
+                                .requestMatchers("/api/pizza/order").authenticated()
                                 .anyRequest().permitAll()
                 )
                 //.apply(new JwtSecurityConfig(tokenProvider));
