@@ -20,8 +20,7 @@ public class OrderDetail {
     @Column(name = "order_detail_id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @OneToOne(mappedBy = "orderDetail")
     @ToString.Exclude
     private Order order;
 

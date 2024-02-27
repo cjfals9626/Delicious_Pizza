@@ -25,7 +25,7 @@ public class PizzaController {
     private final MemberService memberService;
     private final PizzaService pizzaService;
 
-/*    @PostMapping("/order")
+    @PostMapping("/order")
     public ResponseEntity<MsgDTO> pizzaOrder(@RequestBody RequestPizzaOrderDTO requestPizzaOrderDTO) {
         try{
             pizzaService.orderPizza(requestPizzaOrderDTO);
@@ -33,7 +33,7 @@ public class PizzaController {
             return ResponseEntity.ok(new MsgDTO(false, "주문 실패", null));
         }
         return ResponseEntity.ok(new MsgDTO(true, "주문 성공", null));
-    }*/
+    }
 
 
 
