@@ -2,9 +2,12 @@ package org.spring.pizzarazzi.service.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.spring.pizzarazzi.dto.member.MemberInfoDTO;
 import org.spring.pizzarazzi.dto.member.MemberLoginInfoDTO;
+import org.spring.pizzarazzi.dto.request.member.RequestCheckPasswordDTO;
 import org.spring.pizzarazzi.dto.request.member.RequestMemberLoginDTO;
 import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
+import org.spring.pizzarazzi.dto.request.member.RequestMemberUpdateDTO;
 import org.spring.pizzarazzi.exception.DuplicateMemberException;
 import org.spring.pizzarazzi.model.user.Member;
 import org.spring.pizzarazzi.repository.MemberRepository;
@@ -64,5 +67,36 @@ public class MemberService implements UserDetailsService  {
     public Member getMember(Long memberId) {
         log.info("MemberService.getMember");
         return memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다."));
+    }
+
+    public MemberInfoDTO getMemberInfo(Long memberId) {
+        log.info("MemberService.getMemberInfo");
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다."));
+        return MemberInfoDTO.builder()
+                .email(member.getEmail())
+                .nickName(member.getNickName())
+                .roleType(member.getRoleType())
+                .build();
+    }
+
+    public MemberInfoDTO checkPassword(Long memberId, RequestCheckPasswordDTO requestCheckPasswordDTO) {
+        log.info("MemberService.checkPassword");
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다."));
+        if(passwordEncoder.matches(requestCheckPasswordDTO.getPassword(), member.getPassword())) {
+            return MemberInfoDTO.builder()
+                    .email(member.getEmail())
+                    .nickName(member.getNickName())
+                    .roleType(member.getRoleType())
+                    .build();
+        }
+        return new MemberInfoDTO();
+    }
+
+    public void updateMemberInfo(Long memberId, RequestMemberUpdateDTO memberUpdateDTO) {
+        log.info("MemberService.updateMemberInfo");
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다."));
+        member.setEmail(memberUpdateDTO.getEmail());
+        member.setNickName(memberUpdateDTO.getNickName());
+        member.setPassword(passwordEncoder.encode(memberUpdateDTO.getPassword()));
     }
 }
