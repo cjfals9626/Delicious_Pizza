@@ -60,4 +60,9 @@ public class MemberService implements UserDetailsService  {
         }
         return new MemberLoginInfoDTO();
     }
+
+    public Member getMember(Long memberId) {
+        log.info("MemberService.getMember");
+        return memberRepository.findById(memberId).orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다."));
+    }
 }

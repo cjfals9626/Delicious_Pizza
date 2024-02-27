@@ -23,11 +23,11 @@ public class DoughService {
         doughRepository.save(dough);
     }
 
-    public List<DoughDTO> getAllDoughs(){
+    public List<DoughDTO> findAllDoughs(){
         return doughRepository.findAllDoughDTO();
     }
 
-    public DoughDTO getDoughById(Long id) {
+    public DoughDTO findDoughById(Long id) {
         return doughRepository.findByIdDoughDTO(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("해당 도우가 없습니다.")

@@ -30,13 +30,13 @@ public class DoughController {
 
     @GetMapping("/doughs")
     public ResponseEntity<MsgDTO> getAllDoughs() {
-        return ResponseEntity.ok(new MsgDTO(true, "도우 목록 조회 성공", doughService.getAllDoughs()));
+        return ResponseEntity.ok(new MsgDTO(true, "도우 목록 조회 성공", doughService.findAllDoughs()));
     }
 
     @GetMapping("/dough/{id}")
     public ResponseEntity<MsgDTO> getDoughById(@PathVariable Long id) {
         try{
-            return ResponseEntity.ok(new MsgDTO(true, "도우 조회 성공", doughService.getDoughById(id)));
+            return ResponseEntity.ok(new MsgDTO(true, "도우 조회 성공", doughService.findDoughById(id)));
         }catch (IncorrectResultSizeDataAccessException e) {
             return ResponseEntity.ok(new MsgDTO(false, "도우 추가 실패", null));
         }

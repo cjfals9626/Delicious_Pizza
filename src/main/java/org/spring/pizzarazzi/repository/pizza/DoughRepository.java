@@ -5,6 +5,7 @@ import org.spring.pizzarazzi.model.pizza.Dough;
 import org.spring.pizzarazzi.model.user.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface DoughRepository  extends JpaRepository<Dough, Long> {
     @Query("select new org.spring.pizzarazzi.dto.pizza.DoughDTO(d.id, d.name, d.price) from Dough d")
     List<DoughDTO> findAllDoughDTO();
 
-    @Query("select new org.spring.pizzarazzi.dto.pizza.DoughDTO(d.id, d.name, d.price) from Dough d")
-    Optional<DoughDTO> findByIdDoughDTO(Long id);
+    @Query("select new org.spring.pizzarazzi.dto.pizza.DoughDTO(d.id, d.name, d.price) from Dough d where d.id=:id")
+    Optional<DoughDTO> findByIdDoughDTO(@Param("id") Long id);
 
 }

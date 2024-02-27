@@ -24,11 +24,11 @@ public class EdgeService {
 
         edgeRepository.save(edge);
     }
-    public List<EdgeDTO> getAllEdges(){
+    public List<EdgeDTO> findAllEdges(){
         return edgeRepository.findAllEdgeDTO();
     }
 
-    public EdgeDTO getEdgeById(Long id) {
+    public EdgeDTO findEdgeById(Long id) {
         return edgeRepository.findByIdEdgeDTO(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("해당 엣지가 없습니다.")

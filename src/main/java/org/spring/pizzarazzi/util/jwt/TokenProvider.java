@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class TokenProvider implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
-    private static final String AUTHORIZATION = "Bearer ";
+    private static final String BERER = "Bearer ";
     private static final String MEMBER_ID = "id";
     private static final String ROLE_TYPE = "roleType";
     private static final String CREATION_TIME = "start";
@@ -125,7 +125,7 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String resolveToken(String token) {
-        if (StringUtils.hasText(token) && token.startsWith(AUTHORIZATION)) {
+        if (StringUtils.hasText(token) && token.startsWith(BERER)) {
             return token.substring(7);
         }
         return null;

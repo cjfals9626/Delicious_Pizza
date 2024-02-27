@@ -6,6 +6,7 @@ import org.spring.pizzarazzi.model.pizza.Topping;
 import org.spring.pizzarazzi.model.user.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +19,6 @@ public interface ToppingRepository extends JpaRepository<Topping, Long> {
     @Query("select new org.spring.pizzarazzi.dto.pizza.ToppingDTO(t.id, t.name, t.price) from Topping t")
     List<ToppingDTO> findAllToppingDTO();
 
-    @Query("select new org.spring.pizzarazzi.dto.pizza.ToppingDTO(t.id, t.name, t.price) from Topping t")
-    Optional<ToppingDTO> findByIdToppingDTO(Long id);
+    @Query("select new org.spring.pizzarazzi.dto.pizza.ToppingDTO(t.id, t.name, t.price) from Topping t where t.id=:id")
+    Optional<ToppingDTO> findByIdToppingDTO(@Param("id") Long id);
 }

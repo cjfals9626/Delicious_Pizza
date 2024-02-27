@@ -30,13 +30,13 @@ public class EdgeController {
 
     @GetMapping("/edges")
     public ResponseEntity<MsgDTO> getAllEdges() {
-        return ResponseEntity.ok(new MsgDTO(true, "엣지 목록 조회 성공", edgeService.getAllEdges()));
+        return ResponseEntity.ok(new MsgDTO(true, "엣지 목록 조회 성공", edgeService.findAllEdges()));
     }
 
     @GetMapping("/edge/{id}")
     public ResponseEntity<MsgDTO> getEdgeById(@PathVariable Long id) {
         try{
-            return ResponseEntity.ok(new MsgDTO(true, "엣지 조회 성공", edgeService.getEdgeById(id)));
+            return ResponseEntity.ok(new MsgDTO(true, "엣지 조회 성공", edgeService.findEdgeById(id)));
         }catch (IncorrectResultSizeDataAccessException e) {
             return ResponseEntity.ok(new MsgDTO(false, "엣지 추가 실패", null));
         }

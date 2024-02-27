@@ -19,4 +19,11 @@ public class DoughDTO {
     private String name;
     private Integer price;
 
+    public Dough toDough() {
+        return Dough.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .build();
+    }
 }

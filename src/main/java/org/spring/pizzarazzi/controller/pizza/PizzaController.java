@@ -12,23 +12,27 @@ import org.spring.pizzarazzi.exception.DuplicateToppingException;
 import org.spring.pizzarazzi.service.member.MemberService;
 import org.spring.pizzarazzi.service.pizza.DoughService;
 import org.spring.pizzarazzi.service.pizza.EdgeService;
-import org.spring.pizzarazzi.service.pizza.PizzaService;
+import org.spring.pizzarazzi.service.pizza.OrderService;
 import org.spring.pizzarazzi.service.pizza.ToppingService;
+import org.spring.pizzarazzi.util.jwt.TokenProvider;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.spring.pizzarazzi.util.prefix.ConstPrefix.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/pizza")
 public class PizzaController {
-    private final MemberService memberService;
-    private final PizzaService pizzaService;
+    private final OrderService orderService;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/order")
-    public ResponseEntity<MsgDTO> pizzaOrder(@RequestBody RequestPizzaOrderDTO requestPizzaOrderDTO) {
+    public ResponseEntity<MsgDTO> pizzaOrder(@RequestBody RequestPizzaOrderDTO requestPizzaOrderDTO, @RequestHeader(value = AUTHORIZATION) String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         try{
-            pizzaService.orderPizza(requestPizzaOrderDTO);
+            orderService.orderPizza(memberId, requestPizzaOrderDTO);
         }catch (DuplicateMemberException e) {
             return ResponseEntity.ok(new MsgDTO(false, "주문 실패", null));
         }

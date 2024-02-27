@@ -30,13 +30,13 @@ public class ToppingController {
 
     @GetMapping("/toppings")
     public ResponseEntity<MsgDTO> getAllToppings() {
-        return ResponseEntity.ok(new MsgDTO(true, "토핑 목록 조회 성공", toppingService.getAllToppings()));
+        return ResponseEntity.ok(new MsgDTO(true, "토핑 목록 조회 성공", toppingService.findAllToppings()));
     }
 
     @GetMapping("/topping/{id}")
     public ResponseEntity<MsgDTO> getToppingById(@PathVariable Long id) {
         try{
-            return ResponseEntity.ok(new MsgDTO(true, "토핑 조회 성공", toppingService.getToppingById(id)));
+            return ResponseEntity.ok(new MsgDTO(true, "토핑 조회 성공", toppingService.findToppingById(id)));
         }catch (IncorrectResultSizeDataAccessException e) {
             return ResponseEntity.ok(new MsgDTO(false, "토핑 추가 실패", null));
         }
