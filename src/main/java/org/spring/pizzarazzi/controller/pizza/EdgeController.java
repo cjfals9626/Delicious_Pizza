@@ -42,7 +42,7 @@ public class EdgeController {
         }
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<MsgDTO> deleteEdge(@RequestBody RequestDeletePizzaComDTO requestDeletePizzaComDTO) {
         try{
             edgeService.deleteEdge(requestDeletePizzaComDTO);
@@ -52,7 +52,7 @@ public class EdgeController {
         return ResponseEntity.ok(new MsgDTO(true, "엣지 삭제 성공", null));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<MsgDTO> updateEdge(@RequestBody RequestUpdatePizzaComDTO requestUpdatePizzaComDTO) {
         try{
             edgeService.updateEdge(requestUpdatePizzaComDTO);

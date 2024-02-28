@@ -42,7 +42,7 @@ public class DoughController {
         }
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<MsgDTO> deleteDough(@RequestBody RequestDeletePizzaComDTO requestDeletePizzaComDTO) {
         try{
             doughService.deleteDough(requestDeletePizzaComDTO);
@@ -52,7 +52,7 @@ public class DoughController {
         return ResponseEntity.ok(new MsgDTO(true, "도우 삭제 성공", null));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<MsgDTO> updateDough(@RequestBody RequestUpdatePizzaComDTO requestUpdatePizzaComDTO) {
         try{
             doughService.updateDough(requestUpdatePizzaComDTO);

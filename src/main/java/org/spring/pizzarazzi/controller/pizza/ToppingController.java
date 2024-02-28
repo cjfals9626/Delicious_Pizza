@@ -42,7 +42,7 @@ public class ToppingController {
         }
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<MsgDTO> deleteTopping(@RequestBody RequestDeletePizzaComDTO requestDeletePizzaComDTO) {
         try{
             toppingService.deleteTopping(requestDeletePizzaComDTO);
@@ -52,7 +52,7 @@ public class ToppingController {
         return ResponseEntity.ok(new MsgDTO(true, "토핑 삭제 성공", null));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<MsgDTO> updateTopping(@RequestBody RequestUpdatePizzaComDTO requestUpdatePizzaComDTO) {
         try{
             toppingService.updateTopping(requestUpdatePizzaComDTO);
