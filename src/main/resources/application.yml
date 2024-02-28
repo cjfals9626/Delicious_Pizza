@@ -26,3 +26,7 @@ spring:
   sql:
     init:
       mode: always
+
+
+test:
+  topic: "kafka-test"

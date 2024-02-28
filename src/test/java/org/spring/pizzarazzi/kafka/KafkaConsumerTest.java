@@ -6,12 +6,15 @@ import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.util.kafka.KafkaConsumer;
 import org.spring.pizzarazzi.util.kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
+@DirtiesContext
 @EmbeddedKafka(partitions = 1,
         brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "auto.create.topics.enable=true"},
         ports = { 9092 }
@@ -24,11 +27,14 @@ class KafkaConsumerTest {
     @Autowired
     private KafkaProducer producer;
 
+    @Value("${test.topic}")
+    private String topic;
+
     @Test
     public void giveEmbeddedKafkaBroker_whenSendingWithSimpleProducer_thenMessageReceived()
             throws Exception {
 
-        String topic = "kafkaTest";
+
 
         OrderDTO payload = OrderDTO.builder()
                 .memberId(1L)
