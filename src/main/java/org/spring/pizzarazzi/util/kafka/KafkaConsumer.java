@@ -21,8 +21,8 @@ public class KafkaConsumer {
     private OrderDTO payload;
 
     // record 를 수신하기 위한 consumer 설정
-    @KafkaListener(topics = "${test.topic}"
-            /*, containerFactory = "filterListenerContainerFactory"*/)
+    @KafkaListener(topics = "${kafka-config.topic}"
+            /*, containerFactory = "filterListenerContainerFactory" KafkaConsumerConfig에서 필터를 설정했을 경우 활성화*/)
     public void receive(ConsumerRecord<String, OrderDTO> consumerRecord) {
         payload = consumerRecord.value();
         log.info("received payload = {}", payload.toString());

@@ -28,5 +28,6 @@ spring:
       mode: always
 
 
-test:
+kafka-config:
   topic: "kafka-test"
+  bootstrap-servers: "localhost:9092"
