@@ -1,21 +1,12 @@
-package org.spring.pizzarazzi.controller.pizza;
+package org.spring.pizzarazzi.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.spring.pizzarazzi.dto.common.MsgDTO;
-import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
+import org.spring.pizzarazzi.dto.kafka.OrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.*;
-import org.spring.pizzarazzi.exception.DuplicateDoughException;
-import org.spring.pizzarazzi.exception.DuplicateEdgeException;
 import org.spring.pizzarazzi.exception.DuplicateMemberException;
-import org.spring.pizzarazzi.exception.DuplicateToppingException;
-import org.spring.pizzarazzi.service.member.MemberService;
-import org.spring.pizzarazzi.service.pizza.DoughService;
-import org.spring.pizzarazzi.service.pizza.EdgeService;
 import org.spring.pizzarazzi.service.pizza.OrderService;
-import org.spring.pizzarazzi.service.pizza.ToppingService;
 import org.spring.pizzarazzi.util.jwt.TokenProvider;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +14,8 @@ import static org.spring.pizzarazzi.util.prefix.ConstPrefix.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/pizza")
-public class PizzaController {
+@RequestMapping("/api/order")
+public class OrderController {
     private final OrderService orderService;
     private final TokenProvider tokenProvider;
 
@@ -32,7 +23,7 @@ public class PizzaController {
     public ResponseEntity<MsgDTO> pizzaOrder(@RequestBody RequestPizzaOrderDTO requestPizzaOrderDTO, @RequestHeader(value = AUTHORIZATION) String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         try{
-            orderService.orderPizza(memberId, requestPizzaOrderDTO);
+            OrderDTO orderDTO = orderService.orderPizza(memberId, requestPizzaOrderDTO);
         }catch (DuplicateMemberException e) {
             return ResponseEntity.ok(new MsgDTO(false, "주문 실패", null));
         }

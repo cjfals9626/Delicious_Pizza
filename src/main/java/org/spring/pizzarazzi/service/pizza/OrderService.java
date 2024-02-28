@@ -1,6 +1,7 @@
 package org.spring.pizzarazzi.service.pizza;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.pizzarazzi.dto.kafka.OrderDTO;
 import org.spring.pizzarazzi.dto.pizza.DoughDTO;
 import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
 import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
@@ -35,7 +36,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailToppingRepository orderDetailToppingRepository;
 
-    public void orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
+    public OrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
 
         Long totalPrice = 0L;
 
@@ -76,7 +77,14 @@ public class OrderService {
                 .orderDetail(orderDetail)
                 .orderStatus(OrderStatus.WATING)
                 .build();
-        orderRepository.save(order);
+        Order orderSave = orderRepository.save(order);
+
+        return OrderDTO.builder()
+                .memberId(orderSave.getMember().getId())
+                .orderId(orderSave.getId())
+                .orderStatus(orderSave.getOrderStatus())
+                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .build();
 
     }
 }
