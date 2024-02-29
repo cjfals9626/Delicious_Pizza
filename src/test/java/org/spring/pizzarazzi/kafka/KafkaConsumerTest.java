@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1,
-        brokerProperties = {"listeners=PLAINTEXT://localhost:9092"},
+        brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "auto.create.topics.enable=true"},
         ports = { 9092 }
 )
 class KafkaConsumerTest {
