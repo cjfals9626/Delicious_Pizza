@@ -54,7 +54,7 @@ public class MemberServiceTest {
                         .email("user2@naver.com")
                         .password("1234")
                         .nickName("사용자2")
-                        .roleType(RoleType.SHOPKEEPER)
+                        .roleType(RoleType.ADMIN)
                         .build()
 
         );

@@ -1,7 +1,7 @@
 package org.spring.pizzarazzi.service.pizza;
 
 import lombok.RequiredArgsConstructor;
-import org.spring.pizzarazzi.dto.kafka.OrderDTO;
+import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.dto.pizza.DoughDTO;
 import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
 import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
@@ -14,6 +14,7 @@ import org.spring.pizzarazzi.repository.order.OrderDetailRepository;
 import org.spring.pizzarazzi.repository.order.OrderDetailToppingRepository;
 import org.spring.pizzarazzi.repository.order.OrderRepository;
 import org.spring.pizzarazzi.service.member.MemberService;
+import org.spring.pizzarazzi.util.kafka.KafkaOrderDTOBuilderHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailToppingRepository orderDetailToppingRepository;
 
-    public OrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
+    public KafkaOrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
 
         Long totalPrice = 0L;
 
@@ -77,8 +78,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         Order orderSave = orderRepository.save(order);
 
-        return OrderDTO.builder()
-                .memberId(orderSave.getMember().getId())
+        return KafkaOrderDTOBuilderHelper.toAdmin(memberId)
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getOrderDetail().getTotalPrice())

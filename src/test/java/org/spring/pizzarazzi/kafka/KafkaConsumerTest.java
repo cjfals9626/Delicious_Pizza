@@ -1,9 +1,10 @@
 package org.spring.pizzarazzi.kafka;
 
 import org.junit.jupiter.api.Test;
-import org.spring.pizzarazzi.dto.kafka.OrderDTO;
+import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.util.kafka.KafkaConsumer;
+import org.spring.pizzarazzi.util.kafka.KafkaOrderDTOBuilderHelper;
 import org.spring.pizzarazzi.util.kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,14 +37,12 @@ class KafkaConsumerTest {
 
 
 
-        OrderDTO payload = OrderDTO.builder()
-                .memberId(1L)
+        KafkaOrderDTO payload = KafkaOrderDTOBuilderHelper.toAdmin(1L)
                 .orderId(1L)
                 .orderStatus(OrderStatus.WATING)
                 .totalPrice(1000L)
                 .build();
-        OrderDTO payload2 = OrderDTO.builder()
-                .memberId(2L)
+        KafkaOrderDTO payload2 = KafkaOrderDTOBuilderHelper.toAdmin(2L)
                 .orderId(2L)
                 .orderStatus(OrderStatus.WATING)
                 .totalPrice(2000L)
