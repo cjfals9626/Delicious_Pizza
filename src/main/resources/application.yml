@@ -31,3 +31,4 @@ spring:
 kafka-config:
   topic: "kafka-test"
   bootstrap-servers: "localhost:9092"
+  group-id: "group-id"
