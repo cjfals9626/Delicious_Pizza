@@ -59,6 +59,9 @@ public class MemberService implements UserDetailsService  {
                     .email(memberInfoDto.get().getEmail())
                     .nickName(memberInfoDto.get().getNickName())
                     .roleType(memberInfoDto.get().getRoleType())
+                    .address(memberInfoDto.get().getAddress())
+                    .streetAddress(memberInfoDto.get().getStreetAddress())
+                    .detailAddress(memberInfoDto.get().getDetailAddress())
                     .build();
         }
         return new MemberLoginInfoDTO();
@@ -76,6 +79,9 @@ public class MemberService implements UserDetailsService  {
                 .email(member.getEmail())
                 .nickName(member.getNickName())
                 .roleType(member.getRoleType())
+                .address(member.getAddress())
+                .streetAddress(member.getStreetAddress())
+                .detailAddress(member.getDetailAddress())
                 .build();
     }
 
@@ -87,6 +93,9 @@ public class MemberService implements UserDetailsService  {
                     .email(member.getEmail())
                     .nickName(member.getNickName())
                     .roleType(member.getRoleType())
+                    .address(member.getAddress())
+                    .streetAddress(member.getStreetAddress())
+                    .detailAddress(member.getDetailAddress())
                     .build();
         }
         return new MemberInfoDTO();
