@@ -1,4 +1,4 @@
-package org.spring.pizzarazzi;
+package org.spring.pizzarazzi.service.member;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,19 +60,4 @@ public class MemberServiceTest {
         );
     }
 
-    @Test
-    void signUp(){
-        //given
-        when(memberRepository.save(any())).thenReturn(memberDtos.get(0).toEntity(RoleType.CONSUMER));
-        when(memberRepository.save(any())).thenReturn(memberDtos.get(1).toEntity(RoleType.CONSUMER));
-
-        //when
-        memberService.signup(memberDtos.get(0));
-        memberService.signup(memberDtos.get(1));
-        
-        //then
-        // Id 생성 전략을 Identity를 사용하므로, 실제 DBd에 저장되야만 Id가 생성된다. 따라서 테스트에서 Id를 검증할 수 없다.
-        // 만약 Id를 검증하려면 Repository를 Mock이 아니라 실제 Bean으로 사용해야 가능할 듯 싶다.
-
-    }
 }

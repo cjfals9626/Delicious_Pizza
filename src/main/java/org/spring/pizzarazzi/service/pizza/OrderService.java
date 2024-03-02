@@ -1,82 +1,22 @@
 package org.spring.pizzarazzi.service.pizza;
 
-import lombok.RequiredArgsConstructor;
-import org.spring.pizzarazzi.dto.pizza.DoughDTO;
-import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
-import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
+import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
-import org.spring.pizzarazzi.enums.OrderStatus;
-import org.spring.pizzarazzi.model.order.Order;
-import org.spring.pizzarazzi.model.order.OrderDetail;
-import org.spring.pizzarazzi.model.order.OrderDetailTopping;
-import org.spring.pizzarazzi.model.pizza.Dough;
-import org.spring.pizzarazzi.model.user.Member;
-import org.spring.pizzarazzi.repository.order.OrderDetailRepository;
-import org.spring.pizzarazzi.repository.order.OrderDetailToppingRepository;
-import org.spring.pizzarazzi.repository.order.OrderRepository;
-import org.spring.pizzarazzi.service.member.MemberService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
+import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+public interface OrderService {
+    KafkaOrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO);
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class OrderService {
-    private final ToppingService toppingService;
-    private final DoughService doughService;
-    private final EdgeService edgeService;
-    private final MemberService memberService;
+    KafkaOrderDTO takeOrder(RequestTakeOrderDTO requestTakeOrderDTO);
 
-    private final OrderDetailRepository orderDetailRepository;
-    private final OrderRepository orderRepository;
-    private final OrderDetailToppingRepository orderDetailToppingRepository;
+    KafkaOrderDTO rejectOrder(RequestTakeOrderDTO requestTakeOrderDTO);
 
-    public void orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
+    KafkaOrderDTO cancelOrder(RequestTakeOrderDTO requestTakeOrderDTO);
 
-        Long totalPrice = 0L;
+    KafkaOrderDTO deliverOrder(RequestTakeOrderDTO requestTakeOrderDTO);
 
-        DoughDTO doughDTO = doughService.findDoughById(requestPizzaOrderDTO.getDoughId());
-        EdgeDTO edgeDTO = edgeService.findEdgeById(requestPizzaOrderDTO.getEdgeId());
-        List<ToppingDTO> toppings = new ArrayList<>();
-        for (Long toppingId : requestPizzaOrderDTO.getToppings()) {
-            ToppingDTO toppingDTO = toppingService.findToppingById(toppingId);
-            toppings.add(toppingDTO);
-            totalPrice += toppingDTO.getPrice();
-        }
-        totalPrice += doughDTO.getPrice() + edgeDTO.getPrice();
+    KafkaOrderDTO completeOrder(RequestTakeOrderDTO requestTakeOrderDTO);
 
-        //주문 상세
-        OrderDetail orderDetail = OrderDetail.builder()
-                .dough(doughDTO.toDough())
-                .edge(edgeDTO.toEdge())
-                .totalPrice(totalPrice)
-                .build();
-        orderDetailRepository.save(orderDetail);
-
-
-        //주문 상세 - 토핑 다대다 테이블
-        List<OrderDetailTopping> orderDetailToppings = new ArrayList<>();
-        for (ToppingDTO topping : toppings) {
-            OrderDetailTopping orderDetailTopping = OrderDetailTopping.builder()
-                    .orderDetail(orderDetail)
-                    .topping(topping.toTopping())
-                    .build();
-            orderDetailToppings.add(orderDetailTopping);
-        }
-        orderDetailToppingRepository.saveAll(orderDetailToppings);
-
-        //주문
-        Order order = Order.builder()
-                .member(memberService.getMember(memberId))
-                .orderTime(LocalDateTime.now())
-                .orderDetail(orderDetail)
-                .orderStatus(OrderStatus.WATING)
-                .build();
-        orderRepository.save(order);
-
-    }
+    Object findAllOrders(Long memberId);
 }
