@@ -57,4 +57,10 @@ public class OrderController {
         }
         return ResponseEntity.ok(new MsgDTO(true, "주문 완료 성공", null));
     }
+
+    @GetMapping("/orders")
+    public ResponseEntity<MsgDTO> getAllOrders(@RequestHeader(value = AUTHORIZATION) String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return ResponseEntity.ok(new MsgDTO(true, "주문 목록 조회 성공", orderService.findAllOrders(memberId)));
+    }
 }

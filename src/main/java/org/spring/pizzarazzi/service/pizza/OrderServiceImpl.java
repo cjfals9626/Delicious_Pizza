@@ -161,5 +161,10 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public Object findAllOrders(Long memberId) {
+        return orderRepository.findAllByMemberId(memberId);
+    }
+
 
 }

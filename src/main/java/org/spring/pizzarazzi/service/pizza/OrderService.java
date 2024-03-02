@@ -17,4 +17,6 @@ public interface OrderService {
     KafkaOrderDTO deliverOrder(RequestTakeOrderDTO requestTakeOrderDTO);
 
     KafkaOrderDTO completeOrder(RequestTakeOrderDTO requestTakeOrderDTO);
+
+    Object findAllOrders(Long memberId);
 }
