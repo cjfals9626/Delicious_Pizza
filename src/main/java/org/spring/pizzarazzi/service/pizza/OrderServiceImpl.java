@@ -6,6 +6,7 @@ import org.spring.pizzarazzi.dto.pizza.DoughDTO;
 import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
 import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
+import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.model.order.Order;
 import org.spring.pizzarazzi.model.order.OrderDetail;
@@ -85,4 +86,80 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
     }
+
+    @Override
+    public KafkaOrderDTO takeOrder(RequestTakeOrderDTO requestTakeOrderDTO) {
+
+        Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        order.setOrderStatus(OrderStatus.COOKING);
+        Order orderSave = orderRepository.save(order);
+
+        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
+                .orderId(orderSave.getId())
+                .orderStatus(orderSave.getOrderStatus())
+                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .build();
+    }
+
+    @Override
+    public KafkaOrderDTO rejectOrder(RequestTakeOrderDTO requestTakeOrderDTO) {
+
+        Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        order.setOrderStatus(OrderStatus.CANCELED);
+        Order orderSave = orderRepository.save(order);
+
+        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
+                .orderId(orderSave.getId())
+                .orderStatus(orderSave.getOrderStatus())
+                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .build();
+
+    }
+
+    @Override
+    public KafkaOrderDTO cancelOrder(RequestTakeOrderDTO requestTakeOrderDTO) {
+
+        Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        order.setOrderStatus(OrderStatus.CANCELED);
+        Order orderSave = orderRepository.save(order);
+
+        return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
+                .orderId(orderSave.getId())
+                .orderStatus(orderSave.getOrderStatus())
+                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .build();
+
+    }
+
+    @Override
+    public KafkaOrderDTO deliverOrder(RequestTakeOrderDTO requestTakeOrderDTO) {
+
+        Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        order.setOrderStatus(OrderStatus.ON_DELIVERY);
+        Order orderSave = orderRepository.save(order);
+
+        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
+                .orderId(orderSave.getId())
+                .orderStatus(orderSave.getOrderStatus())
+                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .build();
+
+    }
+
+    @Override
+    public KafkaOrderDTO completeOrder(RequestTakeOrderDTO requestTakeOrderDTO) {
+
+        Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        order.setOrderStatus(OrderStatus.COMPLETED);
+        Order orderSave = orderRepository.save(order);
+
+        return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
+                .orderId(orderSave.getId())
+                .orderStatus(orderSave.getOrderStatus())
+                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .build();
+
+    }
+
+
 }

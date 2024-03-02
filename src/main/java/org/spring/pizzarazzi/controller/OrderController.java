@@ -23,7 +23,6 @@ public class OrderController {
     private final KafkaTemplate<String, KafkaOrderDTO> kafkaTemplate;
 
 
-
     @PostMapping("/order")
     public ResponseEntity<MsgDTO> pizzaOrder(@RequestBody RequestPizzaOrderDTO requestPizzaOrderDTO, @RequestHeader(value = AUTHORIZATION) String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
@@ -36,7 +35,26 @@ public class OrderController {
         return ResponseEntity.ok(new MsgDTO(true, "주문 성공", null));
     }
 
+    @PutMapping("/cancel_order")
+    public ResponseEntity<MsgDTO> cancelOrder(@RequestBody RequestTakeOrderDTO requestTakeOrderDTO) {
+        try{
+            KafkaOrderDTO orderDTO = orderService.cancelOrder(requestTakeOrderDTO);
+            kafkaTemplate.send("kafka-test", orderDTO);
+        }catch (DuplicateMemberException e) {
+            return ResponseEntity.ok(new MsgDTO(false, "주문 취소 실패", null));
+        }
+        return ResponseEntity.ok(new MsgDTO(true, "주문 취소 성공", null));
+    }
 
 
-
+    @PutMapping("/complete_order")
+    public ResponseEntity<MsgDTO> completeOrder(@RequestBody RequestTakeOrderDTO requestTakeOrderDTO) {
+        try{
+            KafkaOrderDTO orderDTO = orderService.completeOrder(requestTakeOrderDTO);
+            kafkaTemplate.send("kafka-test", orderDTO);
+        }catch (DuplicateMemberException e) {
+            return ResponseEntity.ok(new MsgDTO(false, "주문 완료 실패", null));
+        }
+        return ResponseEntity.ok(new MsgDTO(true, "주문 완료 성공", null));
+    }
 }
