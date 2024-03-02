@@ -60,14 +60,14 @@ class DoughServiceTest {
         doughService.addDough(requestAddDoughDTO1);
         doughService.addDough(requestAddDoughDTO2);
         //then
-        assertEquals(2, doughService.getAllDoughs().size());
+        assertEquals(2, doughService.findAllDoughs().size());
     }
 
     @Test
     void getAllDoughs() {
         //given
         //when
-        List<DoughDTO> doughs = doughService.getAllDoughs();
+        List<DoughDTO> doughs = doughService.findAllDoughs();
         //then
         assertEquals(3, doughs.size());
     }
@@ -77,9 +77,9 @@ class DoughServiceTest {
         //given
         addDough();
         //when
-        doughService.deleteDough(RequestDeletePizzaComDTO.builder().id(doughService.getAllDoughs().get(0).getId()).build());
+        doughService.deleteDough(RequestDeletePizzaComDTO.builder().id(doughService.findAllDoughs().get(0).getId()).build());
         //then
-        assertEquals(1, doughService.getAllDoughs().size());
+        assertEquals(1, doughService.findAllDoughs().size());
     }
 
     @Test
@@ -87,9 +87,9 @@ class DoughServiceTest {
         //given
         addDough();
         //when
-        doughService.updateDough(RequestUpdatePizzaComDTO.builder().id(doughService.getAllDoughs().get(0).getId()).name("감자").price(30220).build());
+        doughService.updateDough(RequestUpdatePizzaComDTO.builder().id(doughService.findAllDoughs().get(0).getId()).name("감자").price(30220).build());
         //then
-        assertEquals("감자", doughService.getAllDoughs().get(0).getName());
-        assertEquals(30220, doughService.getAllDoughs().get(0).getPrice());
+        assertEquals("감자", doughService.findAllDoughs().get(0).getName());
+        assertEquals(30220, doughService.findAllDoughs().get(0).getPrice());
     }
 }
