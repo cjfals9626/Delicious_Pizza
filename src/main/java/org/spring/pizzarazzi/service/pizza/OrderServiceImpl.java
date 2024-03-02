@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailToppingRepository orderDetailToppingRepository;
 
+    @Override
     public KafkaOrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
 
         Long totalPrice = 0L;
@@ -92,12 +93,11 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.COOKING);
-        Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
-                .orderId(orderSave.getId())
-                .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+        return KafkaOrderDTOBuilderHelper.toConsumer(order.getMember().getId())
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .totalPrice(order.getOrderDetail().getTotalPrice())
                 .build();
     }
 
@@ -106,12 +106,11 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.CANCELED);
-        Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
-                .orderId(orderSave.getId())
-                .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+        return KafkaOrderDTOBuilderHelper.toConsumer(order.getMember().getId())
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .totalPrice(order.getOrderDetail().getTotalPrice())
                 .build();
 
     }
@@ -121,12 +120,11 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.CANCELED);
-        Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
-                .orderId(orderSave.getId())
-                .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+        return KafkaOrderDTOBuilderHelper.toAdmin(order.getMember().getId())
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .totalPrice(order.getOrderDetail().getTotalPrice())
                 .build();
 
     }
@@ -136,12 +134,11 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.ON_DELIVERY);
-        Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
-                .orderId(orderSave.getId())
-                .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+        return KafkaOrderDTOBuilderHelper.toConsumer(order.getMember().getId())
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .totalPrice(order.getOrderDetail().getTotalPrice())
                 .build();
 
     }
@@ -151,12 +148,11 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.COMPLETED);
-        Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
-                .orderId(orderSave.getId())
-                .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+        return KafkaOrderDTOBuilderHelper.toAdmin(order.getMember().getId())
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .totalPrice(order.getOrderDetail().getTotalPrice())
                 .build();
 
     }

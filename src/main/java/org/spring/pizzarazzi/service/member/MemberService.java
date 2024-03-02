@@ -98,6 +98,9 @@ public class MemberService implements UserDetailsService  {
         member.setEmail(memberUpdateDTO.getEmail());
         member.setNickName(memberUpdateDTO.getNickName());
         member.setPassword(passwordEncoder.encode(memberUpdateDTO.getPassword()));
+        member.setAddress(memberUpdateDTO.getAddress());
+        member.setStreetAddress(memberUpdateDTO.getStreetAddress());
+        member.setDetailAddress(memberUpdateDTO.getDetailAddress());
     }
 
     public void deleteMember(Long memberId) {
