@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
 import org.spring.pizzarazzi.dto.response.order.ResponseGetOrderDTO;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrderListDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.model.order.Order;
 import org.spring.pizzarazzi.model.order.OrderDetail;
@@ -21,9 +22,11 @@ import org.spring.pizzarazzi.repository.order.OrderDetailRepository;
 import org.spring.pizzarazzi.repository.order.OrderDetailToppingRepository;
 import org.spring.pizzarazzi.repository.order.OrderRepository;
 import org.spring.pizzarazzi.service.member.MemberService;
+import scala.Int;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -60,16 +63,18 @@ class OrderServiceImplTest {
                         .id(1L)
                         .dough(Dough.builder().id(1L).build())
                         .edge(Edge.builder().id(1L).build())
-                        .totalPrice(10000L)
                         .build())
                 .member(Member.builder()
                         .id(1L)
                         .build())
                 .orderTime(LocalDateTime.now())
                 .orderStatus(OrderStatus.WATING)
+                .name("피자")
+                .totalPrice(10000L)
                 .build();
 
-        when(orderRepository.findById(requestTakeOrderDTO.getOrderId())).thenReturn(Optional.ofNullable(order));
+        //lenient() : mock 객체의 메소드가 호출되지 않았을 때도 에러를 발생시키지 않는다.
+        lenient().when(orderRepository.findById(requestTakeOrderDTO.getOrderId())).thenReturn(Optional.ofNullable(order));
         lenient().when(orderRepository.save(any())).thenReturn(order);
 
 
@@ -148,5 +153,34 @@ class OrderServiceImplTest {
 
         // then
         Assertions.assertThat(responseGetOrderDTO.getOrderStatus()).isEqualTo(OrderStatus.WATING);
+    }
+
+    @Test
+    void findAllOrders() {
+        // given
+        Long memberId = 1L;
+
+        List<ResponseGetOrderListDTO> responseGetOrderListDTOS = new ArrayList<>();
+        responseGetOrderListDTOS.add(ResponseGetOrderListDTO.builder()
+                .orderId(1L)
+                .orderStatus(OrderStatus.WATING)
+                .orderTime(LocalDateTime.now())
+                .totalPrice(10000L)
+                .build());
+
+        responseGetOrderListDTOS.add(ResponseGetOrderListDTO.builder()
+                .orderId(2L)
+                .orderStatus(OrderStatus.WATING)
+                .orderTime(LocalDateTime.now())
+                .totalPrice(20000L)
+                .build());
+
+        when(orderRepository.getAllByMemberId(memberId)).thenReturn(Optional.of(responseGetOrderListDTOS));
+
+        // when
+        List<ResponseGetOrderListDTO> allOrders = orderService.findAllOrders(memberId);
+
+        // then
+        Assertions.assertThat(allOrders.size()).isEqualTo(2);
     }
 }

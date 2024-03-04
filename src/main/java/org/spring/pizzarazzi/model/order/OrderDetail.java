@@ -34,9 +34,9 @@ public class OrderDetail {
     @ToString.Exclude
     private Edge edge;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderDetail")
     private List<OrderDetailTopping> orderDetailToppings = new ArrayList<>();
 
-    @Column
-    private Long totalPrice;
+
 }

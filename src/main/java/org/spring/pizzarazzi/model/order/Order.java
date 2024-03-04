@@ -40,4 +40,7 @@ public class Order {
 
     @Column
     private String name;
+
+    @Column
+    private Long totalPrice;
 }

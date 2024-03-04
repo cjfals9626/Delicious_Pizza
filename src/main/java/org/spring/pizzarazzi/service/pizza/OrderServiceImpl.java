@@ -8,6 +8,7 @@ import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
 import org.spring.pizzarazzi.dto.response.order.ResponseGetOrderDTO;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrderListDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.model.order.Order;
 import org.spring.pizzarazzi.model.order.OrderDetail;
@@ -60,7 +61,6 @@ public class OrderServiceImpl implements OrderService {
         OrderDetail orderDetail = OrderDetail.builder()
                 .dough(doughDTO.toDough())
                 .edge(edgeDTO.toEdge())
-                .totalPrice(totalPrice)
                 .build();
         orderDetailRepository.save(orderDetail);
 
@@ -83,13 +83,14 @@ public class OrderServiceImpl implements OrderService {
                 .orderDetail(orderDetail)
                 .orderStatus(OrderStatus.WATING)
                 .name(pizzaName)
+                .totalPrice(totalPrice)
                 .build();
         Order orderSave = orderRepository.save(order);
 
         return KafkaOrderDTOBuilderHelper.toAdmin(memberId)
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .totalPrice(orderSave.getTotalPrice())
                 .build();
 
     }
@@ -104,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .totalPrice(orderSave.getTotalPrice())
                 .build();
     }
 
@@ -118,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
         return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .totalPrice(orderSave.getTotalPrice())
                 .build();
 
     }
@@ -133,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
         return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .totalPrice(orderSave.getTotalPrice())
                 .build();
 
     }
@@ -148,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
         return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .totalPrice(orderSave.getTotalPrice())
                 .build();
 
     }
@@ -163,14 +164,14 @@ public class OrderServiceImpl implements OrderService {
         return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
-                .totalPrice(orderSave.getOrderDetail().getTotalPrice())
+                .totalPrice(orderSave.getTotalPrice())
                 .build();
 
     }
 
     @Override
-    public Object findAllOrders(Long memberId) {
-        return null;
+    public List<ResponseGetOrderListDTO> findAllOrders(Long memberId) {
+        return orderRepository.getAllByMemberId(memberId).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
     }
 
     @Override
@@ -192,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderName(order.getName())
                 .orderStatus(order.getOrderStatus())
                 .orderTime(String.valueOf(order.getOrderTime()))
-                .totalPrice(byOrderId.getTotalPrice())
+                .totalPrice(order.getTotalPrice())
                 .dough(byOrderId.getDough().getName())
                 .edge(byOrderId.getEdge().getName())
                 .toppings(toppings)
