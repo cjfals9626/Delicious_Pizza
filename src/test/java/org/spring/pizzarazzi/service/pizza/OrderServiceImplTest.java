@@ -1,63 +1,73 @@
 package org.spring.pizzarazzi.service.pizza;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
+import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrdersDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
+import org.spring.pizzarazzi.enums.RoleType;
+import org.spring.pizzarazzi.model.order.Order;
+import org.spring.pizzarazzi.model.order.OrderDetail;
+import org.spring.pizzarazzi.model.pizza.Dough;
+import org.spring.pizzarazzi.model.pizza.Edge;
+import org.spring.pizzarazzi.model.user.Member;
 import org.spring.pizzarazzi.repository.order.OrderRepository;
+import org.spring.pizzarazzi.service.member.MemberService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
 
-    @Mock
+    @InjectMocks
     private OrderServiceImpl orderService;
 
     @Mock
     private OrderRepository orderRepository;
 
-    @InjectMocks
-    private OrderServiceImpl orderServiceImpl;
 
-    @Test
-    void orderPizza() {
-        // given
-        Long memberId = 1L;
-        RequestPizzaOrderDTO requestPizzaOrderDTO = RequestPizzaOrderDTO.builder()
-                                                        .doughId(1L)
-                                                        .edgeId(1L)
-                                                        .toppings(
-                                                                new ArrayList<Long>() {{
-                                                                    add(1L);
-                                                                    add(2L);
-                                                                }}
-                                                        )
-                                                        .build();
+    private RequestTakeOrderDTO requestTakeOrderDTO;
+    private Order order;
+    @BeforeEach
+    void initData(){
+        requestTakeOrderDTO = RequestTakeOrderDTO.builder()
+                .orderId(1L)
+                .memberId(1L)
+                .build();
 
-        given(orderService.orderPizza(memberId, requestPizzaOrderDTO)).willReturn(KafkaOrderDTO.builder()
-                        .to("ADMIN")
-                        .from(String.valueOf(memberId))
-                        .orderId(1L)
-                        .orderStatus(OrderStatus.WATING)
+        order = Order.builder()
+                .id(1L)
+                .orderDetail(OrderDetail.builder()
+                        .id(1L)
+                        .dough(Dough.builder().id(1L).build())
+                        .edge(Edge.builder().id(1L).build())
                         .totalPrice(10000L)
-                .build());
+                        .build())
+                .member(Member.builder()
+                        .id(1L)
+                        .build())
+                .orderTime(LocalDateTime.now())
+                .orderStatus(OrderStatus.WATING)
+                .build();
 
-        // when
-        KafkaOrderDTO orderDTO = orderService.orderPizza(memberId, requestPizzaOrderDTO);
-
-        // then
-        Assertions.assertThat(orderDTO.getOrderStatus()).isEqualTo(OrderStatus.WATING);
+        when(orderRepository.findById(requestTakeOrderDTO.getOrderId())).thenReturn(Optional.ofNullable(order));
+        when(orderRepository.save(any())).thenReturn(order);
 
     }
 
@@ -65,23 +75,13 @@ class OrderServiceImplTest {
     void takeOrder() {
 
         // given
-        RequestTakeOrderDTO requestTakeOrderDTO = RequestTakeOrderDTO.builder()
-                .orderId(1L)
-                .memberId(1L)
-                .build();
-        when(orderService.takeOrder(requestTakeOrderDTO)).thenReturn(KafkaOrderDTO.builder()
-                .to(String.valueOf(requestTakeOrderDTO.getMemberId()))
-                .from("ADMIN")
-                .orderId(requestTakeOrderDTO.getOrderId())
-                .orderStatus(OrderStatus.COOKING)
-                .totalPrice(10000L)
-                .build());
+
 
         // when
-        KafkaOrderDTO orderDTO = orderService.takeOrder(requestTakeOrderDTO);
+        KafkaOrderDTO kafkaOrderDTO = orderService.takeOrder(requestTakeOrderDTO);
 
         // then
-        Assertions.assertThat(orderDTO.getOrderStatus()).isEqualTo(OrderStatus.COOKING);
+        Assertions.assertThat(kafkaOrderDTO.getOrderStatus()).isEqualTo(OrderStatus.COOKING);
 
 
     }
@@ -90,17 +90,6 @@ class OrderServiceImplTest {
     void rejectOrder() {
 
         // given
-        RequestTakeOrderDTO requestTakeOrderDTO = RequestTakeOrderDTO.builder()
-                .orderId(1L)
-                .memberId(1L)
-                .build();
-        when(orderService.rejectOrder(requestTakeOrderDTO)).thenReturn(KafkaOrderDTO.builder()
-                .to(String.valueOf(requestTakeOrderDTO.getMemberId()))
-                .from("ADMIN")
-                .orderId(requestTakeOrderDTO.getOrderId())
-                .orderStatus(OrderStatus.CANCELED)
-                .totalPrice(10000L)
-                .build());
 
         // when
         KafkaOrderDTO orderDTO = orderService.rejectOrder(requestTakeOrderDTO);
@@ -113,17 +102,6 @@ class OrderServiceImplTest {
     void cancelOrder() {
 
         // given
-        RequestTakeOrderDTO requestTakeOrderDTO = RequestTakeOrderDTO.builder()
-                .orderId(1L)
-                .memberId(1L)
-                .build();
-        when(orderService.cancelOrder(requestTakeOrderDTO)).thenReturn(KafkaOrderDTO.builder()
-                .to("ADMIN")
-                .from(String.valueOf(requestTakeOrderDTO.getMemberId()))
-                .orderId(requestTakeOrderDTO.getOrderId())
-                .orderStatus(OrderStatus.CANCELED)
-                .totalPrice(10000L)
-                .build());
 
         // when
         KafkaOrderDTO orderDTO = orderService.cancelOrder(requestTakeOrderDTO);
@@ -135,17 +113,6 @@ class OrderServiceImplTest {
     @Test
     void deliverOrder() {
         // given
-        RequestTakeOrderDTO requestTakeOrderDTO = RequestTakeOrderDTO.builder()
-                .orderId(1L)
-                .memberId(1L)
-                .build();
-        when(orderService.deliverOrder(requestTakeOrderDTO)).thenReturn(KafkaOrderDTO.builder()
-                .to(String.valueOf(requestTakeOrderDTO.getMemberId()))
-                .from("ADMIN")
-                .orderId(requestTakeOrderDTO.getOrderId())
-                .orderStatus(OrderStatus.ON_DELIVERY)
-                .totalPrice(10000L)
-                .build());
 
         // when
         KafkaOrderDTO orderDTO = orderService.deliverOrder(requestTakeOrderDTO);
@@ -157,22 +124,23 @@ class OrderServiceImplTest {
     @Test
     void completeOrder() {
         // given
-        RequestTakeOrderDTO requestTakeOrderDTO = RequestTakeOrderDTO.builder()
-                .orderId(1L)
-                .memberId(1L)
-                .build();
-        when(orderService.completeOrder(requestTakeOrderDTO)).thenReturn(KafkaOrderDTO.builder()
-                .to(String.valueOf(requestTakeOrderDTO.getMemberId()))
-                .from("ADMIN")
-                .orderId(requestTakeOrderDTO.getOrderId())
-                .orderStatus(OrderStatus.COMPLETED)
-                .totalPrice(10000L)
-                .build());
 
         // when
         KafkaOrderDTO orderDTO = orderService.completeOrder(requestTakeOrderDTO);
 
         // then
         Assertions.assertThat(orderDTO.getOrderStatus()).isEqualTo(OrderStatus.COMPLETED);
+    }
+
+    @Test
+    void findOrderById(){
+        // given
+        Long orderId = 1L;
+
+        // when
+        ResponseGetOrdersDTO responseGetOrdersDTO = orderService.findOrderById(orderId);
+
+        // then
+        Assertions.assertThat(responseGetOrdersDTO.getOrderStatus()).isEqualTo(OrderStatus.COMPLETED);
     }
 }

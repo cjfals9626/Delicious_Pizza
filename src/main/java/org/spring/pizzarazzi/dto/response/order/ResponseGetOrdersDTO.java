@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.spring.pizzarazzi.enums.OrderStatus;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ResponseGetOrdersDTO {
     private Long orderId;
     private Long orderDetailId;
     private String orderName;
-    private String orderStatus;
+    private OrderStatus orderStatus;
     private String orderTime;
     private Long totalPrice;
     private String dough;
