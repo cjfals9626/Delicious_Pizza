@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseGetOrdersDTO {
+public class ResponseGetOrderDTO {
     private Long orderId;
     private Long orderDetailId;
     private String orderName;

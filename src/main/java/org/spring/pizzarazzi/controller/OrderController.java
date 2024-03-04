@@ -1,11 +1,9 @@
 package org.spring.pizzarazzi.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.spring.pizzarazzi.dto.common.MsgDTO;
 import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.*;
-import org.spring.pizzarazzi.dto.response.order.ResponseGetOrdersDTO;
 import org.spring.pizzarazzi.exception.DuplicateMemberException;
 import org.spring.pizzarazzi.service.pizza.OrderService;
 import org.spring.pizzarazzi.util.jwt.TokenProvider;

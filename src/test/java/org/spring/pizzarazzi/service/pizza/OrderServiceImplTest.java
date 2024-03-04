@@ -8,28 +8,25 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
-import org.spring.pizzarazzi.dto.request.member.RequestMemberSignUpDTO;
-import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
-import org.spring.pizzarazzi.dto.response.order.ResponseGetOrdersDTO;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrderDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
-import org.spring.pizzarazzi.enums.RoleType;
 import org.spring.pizzarazzi.model.order.Order;
 import org.spring.pizzarazzi.model.order.OrderDetail;
 import org.spring.pizzarazzi.model.pizza.Dough;
 import org.spring.pizzarazzi.model.pizza.Edge;
+import org.spring.pizzarazzi.model.pizza.Topping;
 import org.spring.pizzarazzi.model.user.Member;
+import org.spring.pizzarazzi.repository.order.OrderDetailRepository;
+import org.spring.pizzarazzi.repository.order.OrderDetailToppingRepository;
 import org.spring.pizzarazzi.repository.order.OrderRepository;
 import org.spring.pizzarazzi.service.member.MemberService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,6 +37,12 @@ class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private OrderDetailRepository orderDetailRepository;
+
+    @Mock
+    private OrderDetailToppingRepository orderDetailToppingRepository;
 
 
     private RequestTakeOrderDTO requestTakeOrderDTO;
@@ -67,7 +70,8 @@ class OrderServiceImplTest {
                 .build();
 
         when(orderRepository.findById(requestTakeOrderDTO.getOrderId())).thenReturn(Optional.ofNullable(order));
-        when(orderRepository.save(any())).thenReturn(order);
+        lenient().when(orderRepository.save(any())).thenReturn(order);
+
 
     }
 
@@ -136,11 +140,13 @@ class OrderServiceImplTest {
     void findOrderById(){
         // given
         Long orderId = 1L;
+        when(orderDetailRepository.findByOrderId(orderId)).thenReturn(Optional.ofNullable(order.getOrderDetail()));
+        when(orderDetailToppingRepository.findByOrderDetailId(orderId)).thenReturn(new ArrayList<>());
 
         // when
-        ResponseGetOrdersDTO responseGetOrdersDTO = orderService.findOrderById(orderId);
+        ResponseGetOrderDTO responseGetOrderDTO = orderService.findOrderById(orderId);
 
         // then
-        Assertions.assertThat(responseGetOrdersDTO.getOrderStatus()).isEqualTo(OrderStatus.COMPLETED);
+        Assertions.assertThat(responseGetOrderDTO.getOrderStatus()).isEqualTo(OrderStatus.WATING);
     }
 }

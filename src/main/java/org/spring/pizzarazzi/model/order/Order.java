@@ -37,4 +37,7 @@ public class Order {
 
     @Column
     private LocalDateTime orderTime;
+
+    @Column
+    private String name;
 }

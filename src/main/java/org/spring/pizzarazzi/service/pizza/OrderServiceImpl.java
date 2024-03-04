@@ -7,7 +7,7 @@ import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
 import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
-import org.spring.pizzarazzi.dto.response.order.ResponseGetOrdersDTO;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrderDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.model.order.Order;
 import org.spring.pizzarazzi.model.order.OrderDetail;
@@ -40,14 +40,19 @@ public class OrderServiceImpl implements OrderService {
     public KafkaOrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
 
         Long totalPrice = 0L;
+        String pizzaName = "";
 
         DoughDTO doughDTO = doughService.findDoughById(requestPizzaOrderDTO.getDoughId());
         EdgeDTO edgeDTO = edgeService.findEdgeById(requestPizzaOrderDTO.getEdgeId());
+
+        pizzaName = doughDTO.getName() + " " + edgeDTO.getName();
+
         List<ToppingDTO> toppings = new ArrayList<>();
         for (Long toppingId : requestPizzaOrderDTO.getToppings()) {
             ToppingDTO toppingDTO = toppingService.findToppingById(toppingId);
             toppings.add(toppingDTO);
             totalPrice += toppingDTO.getPrice();
+            pizzaName += toppingDTO.getName() + " ";
         }
         totalPrice += doughDTO.getPrice() + edgeDTO.getPrice();
 
@@ -77,6 +82,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderTime(LocalDateTime.now())
                 .orderDetail(orderDetail)
                 .orderStatus(OrderStatus.WATING)
+                .name(pizzaName)
                 .build();
         Order orderSave = orderRepository.save(order);
 
@@ -168,11 +174,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseGetOrdersDTO findOrderById(Long orderId) {
+    public ResponseGetOrderDTO findOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        OrderDetail byOrderId = orderDetailRepository.findByOrderId(orderId).orElseThrow(() -> new IllegalArgumentException("주문 상세가 존재하지 않습니다."));
+        List<OrderDetailTopping> byOrderDetailId = orderDetailToppingRepository.findByOrderDetailId(byOrderId.getId());
+
+        List<String> toppings = new ArrayList<>();
+        for (OrderDetailTopping orderDetailTopping : byOrderDetailId) {
+            String toppingName = orderDetailTopping.getTopping().getName();
+            toppings.add(toppingName);
+        }
 
 
+        return ResponseGetOrderDTO.builder()
+                .orderId(order.getId())
+                .orderDetailId(byOrderId.getId())
+                .orderName(order.getName())
+                .orderStatus(order.getOrderStatus())
+                .orderTime(String.valueOf(order.getOrderTime()))
+                .totalPrice(byOrderId.getTotalPrice())
+                .dough(byOrderId.getDough().getName())
+                .edge(byOrderId.getEdge().getName())
+                .toppings(toppings)
+                .build();
 
-        return null;
     }
 
 
