@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ResponseGetOrdersDTO {
     private Long orderId;
+    private Long orderDetailId;
     private String orderName;
-    private String memberAddress;
     private String orderStatus;
     private String orderTime;
     private Long totalPrice;

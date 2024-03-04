@@ -7,6 +7,7 @@ import org.spring.pizzarazzi.dto.pizza.EdgeDTO;
 import org.spring.pizzarazzi.dto.pizza.ToppingDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestPizzaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.RequestTakeOrderDTO;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrdersDTO;
 import org.spring.pizzarazzi.enums.OrderStatus;
 import org.spring.pizzarazzi.model.order.Order;
 import org.spring.pizzarazzi.model.order.OrderDetail;
@@ -163,7 +164,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Object findAllOrders(Long memberId) {
-        return orderRepository.findAllByMemberId(memberId);
+        return null;
+    }
+
+    @Override
+    public ResponseGetOrdersDTO findOrderById(Long orderId) {
+
+
+
+        return null;
     }
 
 

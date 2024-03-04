@@ -5,6 +5,7 @@ import lombok.Value;
 import org.spring.pizzarazzi.dto.common.MsgDTO;
 import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.*;
+import org.spring.pizzarazzi.dto.response.order.ResponseGetOrdersDTO;
 import org.spring.pizzarazzi.exception.DuplicateMemberException;
 import org.spring.pizzarazzi.service.pizza.OrderService;
 import org.spring.pizzarazzi.util.jwt.TokenProvider;
@@ -58,9 +59,19 @@ public class OrderController {
         return ResponseEntity.ok(new MsgDTO(true, "주문 완료 성공", null));
     }
 
+
+    @GetMapping("/order")
+    public ResponseEntity<MsgDTO> getOrder(@RequestParam Long orderId) {
+        return ResponseEntity.ok(new MsgDTO(true, "주문 조회 성공", orderService.findOrderById(orderId)));
+    }
+
+
+    //================================================================================================
     @GetMapping("/orders")
     public ResponseEntity<MsgDTO> getAllOrders(@RequestHeader(value = AUTHORIZATION) String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return ResponseEntity.ok(new MsgDTO(true, "주문 목록 조회 성공", orderService.findAllOrders(memberId)));
     }
+
+
 }
