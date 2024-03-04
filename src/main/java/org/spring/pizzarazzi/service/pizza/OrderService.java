@@ -21,4 +21,6 @@ public interface OrderService {
     Object findAllOrders(Long memberId);
 
     Object findOrderById(Long orderId);
+
+    void deleteOrder(Long orderId);
 }

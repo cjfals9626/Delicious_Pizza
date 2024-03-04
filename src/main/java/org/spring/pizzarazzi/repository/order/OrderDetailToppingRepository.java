@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface OrderDetailToppingRepository extends JpaRepository<OrderDetailTopping, Long> {
     List<OrderDetailTopping> findByOrderDetailId(Long orderDetailId);
+
+    void deleteByOrderDetailId(Long orderDetailId);
 }

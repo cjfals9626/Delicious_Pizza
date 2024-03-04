@@ -69,4 +69,14 @@ public class OrderController {
         return ResponseEntity.ok(new MsgDTO(true, "주문 목록 조회 성공", orderService.findAllOrders(memberId)));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<MsgDTO> deleteOrder(@RequestParam Long orderId) {
+        try{
+            orderService.deleteOrder(orderId);
+        }catch (Exception e) {
+            return ResponseEntity.ok(new MsgDTO(false, "주문 삭제 실패", null));
+        }
+        return ResponseEntity.ok(new MsgDTO(true, "주문 삭제 성공", null));
+    }
+
 }

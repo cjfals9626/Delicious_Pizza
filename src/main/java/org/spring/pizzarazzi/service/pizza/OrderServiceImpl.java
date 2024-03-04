@@ -34,8 +34,8 @@ public class OrderServiceImpl implements OrderService {
     private final EdgeService edgeService;
     private final MemberService memberService;
 
-    private final OrderDetailRepository orderDetailRepository;
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final OrderDetailToppingRepository orderDetailToppingRepository;
 
     public KafkaOrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
@@ -201,5 +201,14 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public void deleteOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+        OrderDetail orderDetail = orderDetailRepository.findByOrderId(orderId).orElseThrow(() -> new IllegalArgumentException("주문 상세가 존재하지 않습니다."));
+
+        orderDetailToppingRepository.deleteByOrderDetailId(orderDetail.getId());
+        orderDetailRepository.deleteByOrderId(orderId);
+        orderRepository.delete(order);
+    }
 
 }
