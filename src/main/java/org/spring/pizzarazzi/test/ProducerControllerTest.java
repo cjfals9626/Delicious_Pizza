@@ -24,6 +24,7 @@ public class ProducerControllerTest {
                 .orderId(1L)
                 .orderStatus(OrderStatus.WATING)
                 .totalPrice(1000L)
+                .massage("주문 상태가 WATING으로 변경되었습니다.")
                 .build();
         kafkaTemplate.send(topicName, orderDTO);
         return "success";

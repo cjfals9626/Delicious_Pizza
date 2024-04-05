@@ -87,7 +87,8 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toAdmin(memberId)
+
+        return KafkaOrderDTOBuilderHelper.orderPizza(order.getMember().getEmail(), memberId)
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getTotalPrice())
@@ -102,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.COOKING);
         Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
+        return KafkaOrderDTOBuilderHelper.takeOrder(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getTotalPrice())
@@ -116,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.CANCELED);
         Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
+        return KafkaOrderDTOBuilderHelper.rejectOrder(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getTotalPrice())
@@ -131,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.CANCELED);
         Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
+        return KafkaOrderDTOBuilderHelper.cancelOrder(orderSave.getMember().getEmail(), orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getTotalPrice())
@@ -146,7 +147,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.ON_DELIVERY);
         Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toConsumer(orderSave.getMember().getId())
+        return KafkaOrderDTOBuilderHelper.deliverOrder(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getTotalPrice())
@@ -161,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.COMPLETED);
         Order orderSave = orderRepository.save(order);
 
-        return KafkaOrderDTOBuilderHelper.toAdmin(orderSave.getMember().getId())
+        return KafkaOrderDTOBuilderHelper.completeOrder(orderSave.getMember().getEmail(), orderSave.getMember().getId())
                 .orderId(orderSave.getId())
                 .orderStatus(orderSave.getOrderStatus())
                 .totalPrice(orderSave.getTotalPrice())
