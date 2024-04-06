@@ -14,5 +14,8 @@ public class MemberInfoDTO {
     private String email;
     private String nickName;
     private RoleType roleType;
+    private String address;
+    private String streetAddress;
+    private String detailAddress;
 }
 

@@ -38,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final OrderDetailToppingRepository orderDetailToppingRepository;
 
+    @Override
     public KafkaOrderDTO orderPizza(Long memberId, RequestPizzaOrderDTO requestPizzaOrderDTO) {
 
         Long totalPrice = 0L;
@@ -101,7 +102,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.COOKING);
-        Order orderSave = orderRepository.save(order);
 
         return KafkaOrderDTOBuilderHelper.takeOrder(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
@@ -115,7 +115,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.CANCELED);
-        Order orderSave = orderRepository.save(order);
 
         return KafkaOrderDTOBuilderHelper.rejectOrder(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
@@ -130,7 +129,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.CANCELED);
-        Order orderSave = orderRepository.save(order);
 
         return KafkaOrderDTOBuilderHelper.cancelOrder(orderSave.getMember().getEmail(), orderSave.getMember().getId())
                 .orderId(orderSave.getId())
@@ -145,7 +143,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.ON_DELIVERY);
-        Order orderSave = orderRepository.save(order);
 
         return KafkaOrderDTOBuilderHelper.deliverOrder(orderSave.getMember().getId())
                 .orderId(orderSave.getId())
@@ -160,7 +157,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(requestTakeOrderDTO.getOrderId()).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
         order.setOrderStatus(OrderStatus.COMPLETED);
-        Order orderSave = orderRepository.save(order);
 
         return KafkaOrderDTOBuilderHelper.completeOrder(orderSave.getMember().getEmail(), orderSave.getMember().getId())
                 .orderId(orderSave.getId())

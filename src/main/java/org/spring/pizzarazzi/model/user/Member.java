@@ -37,6 +37,12 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    private String address;				// 우편 번호
+
+    private String streetAddress;		// 지번 주소
+
+    private String detailAddress;		// 상세 주소
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
