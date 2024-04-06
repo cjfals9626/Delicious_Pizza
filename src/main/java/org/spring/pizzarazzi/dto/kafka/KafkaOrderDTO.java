@@ -13,6 +13,5 @@ public class KafkaOrderDTO {
     private Long orderId;
     private OrderStatus orderStatus;
     private Long totalPrice;
-
-    private String massage; //주문 상태가 orderStatus로 변경되었습니다.
+    private String massage;
 }
