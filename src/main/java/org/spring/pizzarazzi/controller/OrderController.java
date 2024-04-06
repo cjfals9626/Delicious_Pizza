@@ -1,7 +1,6 @@
 package org.spring.pizzarazzi.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.spring.pizzarazzi.dto.common.MsgDTO;
 import org.spring.pizzarazzi.dto.kafka.KafkaOrderDTO;
 import org.spring.pizzarazzi.dto.request.pizza.*;
@@ -58,9 +57,26 @@ public class OrderController {
         return ResponseEntity.ok(new MsgDTO(true, "주문 완료 성공", null));
     }
 
+
+    @GetMapping("/order")
+    public ResponseEntity<MsgDTO> getOrder(@RequestParam Long orderId) {
+        return ResponseEntity.ok(new MsgDTO(true, "주문 조회 성공", orderService.findOrderById(orderId)));
+    }
+
     @GetMapping("/orders")
     public ResponseEntity<MsgDTO> getAllOrders(@RequestHeader(value = AUTHORIZATION) String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return ResponseEntity.ok(new MsgDTO(true, "주문 목록 조회 성공", orderService.findAllOrders(memberId)));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<MsgDTO> deleteOrder(@RequestParam Long orderId) {
+        try{
+            orderService.deleteOrder(orderId);
+        }catch (Exception e) {
+            return ResponseEntity.ok(new MsgDTO(false, "주문 삭제 실패", null));
+        }
+        return ResponseEntity.ok(new MsgDTO(true, "주문 삭제 성공", null));
+    }
+
 }
