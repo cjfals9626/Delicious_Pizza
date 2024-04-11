@@ -17,7 +17,7 @@ public class RequestMemberSignUpDTO {
     private String nickName;
     private RoleType roleType;
     private String address;
-    private String streetAddress;
+    private String zoneCode;
     private String detailAddress;
 
     public Member toEntity(RoleType roleType) {
@@ -27,7 +27,7 @@ public class RequestMemberSignUpDTO {
                 .nickName(nickName)
                 .roleType(roleType)
                 .address(address)
-                .streetAddress(streetAddress)
+                .zoneCode(zoneCode)
                 .detailAddress(detailAddress)
                 .build();
     }

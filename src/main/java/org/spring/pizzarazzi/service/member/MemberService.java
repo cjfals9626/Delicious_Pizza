@@ -60,7 +60,7 @@ public class MemberService implements UserDetailsService  {
                     .nickName(memberInfoDto.get().getNickName())
                     .roleType(memberInfoDto.get().getRoleType())
                     .address(memberInfoDto.get().getAddress())
-                    .streetAddress(memberInfoDto.get().getStreetAddress())
+                    .zoneCode(memberInfoDto.get().getZoneCode())
                     .detailAddress(memberInfoDto.get().getDetailAddress())
                     .build();
         }
@@ -80,7 +80,7 @@ public class MemberService implements UserDetailsService  {
                 .nickName(member.getNickName())
                 .roleType(member.getRoleType())
                 .address(member.getAddress())
-                .streetAddress(member.getStreetAddress())
+                .zoneCode(member.getZoneCode())
                 .detailAddress(member.getDetailAddress())
                 .build();
     }
@@ -94,7 +94,7 @@ public class MemberService implements UserDetailsService  {
                     .nickName(member.getNickName())
                     .roleType(member.getRoleType())
                     .address(member.getAddress())
-                    .streetAddress(member.getStreetAddress())
+                    .zoneCode(member.getZoneCode())
                     .detailAddress(member.getDetailAddress())
                     .build();
         }
@@ -108,7 +108,7 @@ public class MemberService implements UserDetailsService  {
         member.setNickName(memberUpdateDTO.getNickName());
         member.setPassword(passwordEncoder.encode(memberUpdateDTO.getPassword()));
         member.setAddress(memberUpdateDTO.getAddress());
-        member.setStreetAddress(memberUpdateDTO.getStreetAddress());
+        member.setZoneCode(memberUpdateDTO.getZoneCode());
         member.setDetailAddress(memberUpdateDTO.getDetailAddress());
     }
 

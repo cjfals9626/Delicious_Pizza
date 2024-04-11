@@ -37,9 +37,9 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    private String address;				// 우편 번호
+    private String address;				// 주소
 
-    private String streetAddress;		// 지번 주소
+    private String zoneCode;		// 우편 번호
 
     private String detailAddress;		// 상세 주소
 
