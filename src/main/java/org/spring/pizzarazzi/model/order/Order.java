@@ -43,4 +43,10 @@ public class Order {
 
     @Column
     private Long totalPrice;
+
+    private String address;				// 주소
+
+    private String zoneCode;		// 우편 번호
+
+    private String detailAddress;		// 상세 주소
 }

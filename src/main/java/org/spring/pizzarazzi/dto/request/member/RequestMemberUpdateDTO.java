@@ -15,7 +15,4 @@ public class RequestMemberUpdateDTO {
     private String email;
     private String nickName;
     private String password;
-    private String address;
-    private String zoneCode;
-    private String detailAddress;
 }
