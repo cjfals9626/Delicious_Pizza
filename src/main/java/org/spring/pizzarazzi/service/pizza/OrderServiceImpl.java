@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
                 .member(memberService.getMember(memberId))
                 .orderTime(LocalDateTime.now())
                 .orderDetail(orderDetail)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .name(pizzaName)
                 .totalPrice(totalPrice)
                 .address(requestPizzaOrderDTO.getAddress())

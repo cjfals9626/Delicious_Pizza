@@ -39,12 +39,12 @@ class KafkaConsumerTest {
 
         KafkaOrderDTO payload = KafkaOrderDTOBuilderHelper.toAdmin(1L)
                 .orderId(1L)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .totalPrice(1000L)
                 .build();
         KafkaOrderDTO payload2 = KafkaOrderDTOBuilderHelper.toAdmin(2L)
                 .orderId(2L)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .totalPrice(2000L)
                 .build();
 

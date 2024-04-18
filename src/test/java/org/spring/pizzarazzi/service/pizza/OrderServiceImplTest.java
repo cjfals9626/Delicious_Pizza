@@ -68,7 +68,7 @@ class OrderServiceImplTest {
                         .id(1L)
                         .build())
                 .orderTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .name("피자")
                 .totalPrice(10000L)
                 .build();
@@ -152,7 +152,7 @@ class OrderServiceImplTest {
         ResponseGetOrderDTO responseGetOrderDTO = orderService.findOrderById(orderId);
 
         // then
-        Assertions.assertThat(responseGetOrderDTO.getOrderStatus()).isEqualTo(OrderStatus.WATING);
+        Assertions.assertThat(responseGetOrderDTO.getOrderStatus()).isEqualTo(OrderStatus.WAITING);
     }
 
     @Test
@@ -163,14 +163,14 @@ class OrderServiceImplTest {
         List<ResponseGetOrderListDTO> responseGetOrderListDTOS = new ArrayList<>();
         responseGetOrderListDTOS.add(ResponseGetOrderListDTO.builder()
                 .orderId(1L)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .orderTime(LocalDateTime.now())
                 .totalPrice(10000L)
                 .build());
 
         responseGetOrderListDTOS.add(ResponseGetOrderListDTO.builder()
                 .orderId(2L)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .orderTime(LocalDateTime.now())
                 .totalPrice(20000L)
                 .build());
