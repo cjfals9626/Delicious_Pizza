@@ -22,4 +22,7 @@ public class ResponseGetOrderDTO {
     private String dough;
     private String edge;
     private List<String> toppings;
+    private String address;
+    private String zoneCode;
+    private String detailAddress;
 }

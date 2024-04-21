@@ -13,4 +13,7 @@ public class RequestPizzaOrderDTO {
     private Long doughId;
     private Long edgeId;
     private List<Long> toppings;
+    private String address;
+    private String zoneCode;
+    private String detailAddress;
 }

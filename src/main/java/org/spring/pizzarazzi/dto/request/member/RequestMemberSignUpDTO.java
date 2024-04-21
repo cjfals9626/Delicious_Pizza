@@ -16,9 +16,6 @@ public class RequestMemberSignUpDTO {
     private String password;
     private String nickName;
     private RoleType roleType;
-    private String address;
-    private String zoneCode;
-    private String detailAddress;
 
     public Member toEntity(RoleType roleType) {
         return Member.builder()
@@ -26,9 +23,6 @@ public class RequestMemberSignUpDTO {
                 .password(password)
                 .nickName(nickName)
                 .roleType(roleType)
-                .address(address)
-                .zoneCode(zoneCode)
-                .detailAddress(detailAddress)
                 .build();
     }
 

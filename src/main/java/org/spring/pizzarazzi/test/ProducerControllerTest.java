@@ -22,9 +22,9 @@ public class ProducerControllerTest {
     public String send() {
         KafkaOrderDTO orderDTO = KafkaOrderDTO.builder()
                 .orderId(1L)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .totalPrice(1000L)
-                .massage("주문 상태가 WATING으로 변경되었습니다.")
+                .massage("주문 상태가 WAITING으로 변경되었습니다.")
                 .build();
         kafkaTemplate.send(topicName, orderDTO);
         return "success";

@@ -82,9 +82,12 @@ public class OrderServiceImpl implements OrderService {
                 .member(memberService.getMember(memberId))
                 .orderTime(LocalDateTime.now())
                 .orderDetail(orderDetail)
-                .orderStatus(OrderStatus.WATING)
+                .orderStatus(OrderStatus.WAITING)
                 .name(pizzaName)
                 .totalPrice(totalPrice)
+                .address(requestPizzaOrderDTO.getAddress())
+                .zoneCode(requestPizzaOrderDTO.getZoneCode())
+                .detailAddress(requestPizzaOrderDTO.getDetailAddress())
                 .build();
         Order orderSave = orderRepository.save(order);
 
@@ -194,6 +197,9 @@ public class OrderServiceImpl implements OrderService {
                 .dough(byOrderId.getDough().getName())
                 .edge(byOrderId.getEdge().getName())
                 .toppings(toppings)
+                .address(order.getAddress())
+                .zoneCode(order.getZoneCode())
+                .detailAddress(order.getDetailAddress())
                 .build();
 
     }

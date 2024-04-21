@@ -59,9 +59,6 @@ public class MemberService implements UserDetailsService  {
                     .email(memberInfoDto.get().getEmail())
                     .nickName(memberInfoDto.get().getNickName())
                     .roleType(memberInfoDto.get().getRoleType())
-                    .address(memberInfoDto.get().getAddress())
-                    .zoneCode(memberInfoDto.get().getZoneCode())
-                    .detailAddress(memberInfoDto.get().getDetailAddress())
                     .build();
         }
         return new MemberLoginInfoDTO();
@@ -79,9 +76,6 @@ public class MemberService implements UserDetailsService  {
                 .email(member.getEmail())
                 .nickName(member.getNickName())
                 .roleType(member.getRoleType())
-                .address(member.getAddress())
-                .zoneCode(member.getZoneCode())
-                .detailAddress(member.getDetailAddress())
                 .build();
     }
 
@@ -93,9 +87,6 @@ public class MemberService implements UserDetailsService  {
                     .email(member.getEmail())
                     .nickName(member.getNickName())
                     .roleType(member.getRoleType())
-                    .address(member.getAddress())
-                    .zoneCode(member.getZoneCode())
-                    .detailAddress(member.getDetailAddress())
                     .build();
         }
         return new MemberInfoDTO();
@@ -107,9 +98,6 @@ public class MemberService implements UserDetailsService  {
         member.setEmail(memberUpdateDTO.getEmail());
         member.setNickName(memberUpdateDTO.getNickName());
         member.setPassword(passwordEncoder.encode(memberUpdateDTO.getPassword()));
-        member.setAddress(memberUpdateDTO.getAddress());
-        member.setZoneCode(memberUpdateDTO.getZoneCode());
-        member.setDetailAddress(memberUpdateDTO.getDetailAddress());
     }
 
     public void deleteMember(Long memberId) {
